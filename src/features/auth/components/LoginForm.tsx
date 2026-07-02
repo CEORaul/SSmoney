@@ -105,8 +105,8 @@ export function LoginForm() {
             {formError && (
               <p className="text-sm text-destructive">{formError}</p>
             )}
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? "Entrando..." : "Entrar"}
+            <Button type="submit" className="w-full" loading={isPending}>
+              Entrar
             </Button>
           </form>
         </Form>

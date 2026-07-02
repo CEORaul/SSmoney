@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Wallet } from "lucide-react";
 
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,7 @@ export default async function NetWorthPage() {
           <p className="text-sm text-muted-foreground">Patrimônio líquido</p>
           <p
             className={cn(
-              "text-3xl font-semibold",
+              "text-4xl font-semibold tracking-tight tabular-nums",
               total < 0 && "text-red-600 dark:text-red-400"
             )}
           >
@@ -54,6 +54,7 @@ export default async function NetWorthPage() {
 
       {assets.length === 0 ? (
         <EmptyState
+          icon={<Wallet className="size-5" />}
           title="Nenhum ativo cadastrado"
           description="Adicione seus ativos e dívidas manualmente para ver seu patrimônio líquido."
         />

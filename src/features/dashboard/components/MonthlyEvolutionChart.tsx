@@ -59,16 +59,31 @@ export function MonthlyEvolutionChart({
                 }
               />
               <Tooltip
+                cursor={{ fill: "var(--muted)", opacity: 0.4 }}
                 formatter={(value) => formatCurrency(Math.round(Number(value) * 100), currency)}
                 contentStyle={{
                   borderRadius: "var(--radius-lg)",
                   border: "1px solid var(--border)",
                   background: "var(--popover)",
                   color: "var(--popover-foreground)",
+                  boxShadow: "0 4px 16px oklch(0 0 0 / 0.12)",
                 }}
               />
-              <Bar dataKey="Receitas" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Despesas" fill="var(--chart-3)" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="Receitas"
+                fill="var(--chart-1)"
+                radius={[4, 4, 0, 0]}
+                animationDuration={600}
+                animationEasing="ease-out"
+              />
+              <Bar
+                dataKey="Despesas"
+                fill="var(--chart-3)"
+                radius={[4, 4, 0, 0]}
+                animationDuration={600}
+                animationEasing="ease-out"
+                animationBegin={100}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

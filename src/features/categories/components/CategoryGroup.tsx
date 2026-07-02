@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Archive, ArchiveRestore, MoreHorizontal, Pencil, Trash2 } from "lucide-react"
+import { Archive, ArchiveRestore, MoreHorizontal, Pencil, Tag, Trash2 } from "lucide-react"
+import { motion } from "motion/react"
 import { toast } from "sonner"
 
 import {
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { cn } from "@/lib/utils"
+import { fadeInUp, staggerContainer } from "@/lib/motion"
 import type { Category } from "@/generated/prisma/client"
 
 export function CategoryGroup({
@@ -42,15 +44,21 @@ export function CategoryGroup({
       <CardContent className="space-y-6">
         {active.length === 0 ? (
           <EmptyState
+            icon={<Tag className="size-5" />}
             title="Nenhuma categoria"
             description="Crie uma categoria para começar a organizar suas transações."
           />
         ) : (
-          <ul className="space-y-1">
+          <motion.ul
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+            className="space-y-1"
+          >
             {active.map((category) => (
               <CategoryRow key={category.id} category={category} />
             ))}
-          </ul>
+          </motion.ul>
         )}
         {archived.length > 0 && (
           <div>
@@ -111,9 +119,10 @@ function CategoryRow({
   }
 
   return (
-    <li
+    <motion.li
+      variants={archived ? undefined : fadeInUp}
       className={cn(
-        "flex items-center justify-between gap-3 rounded-lg px-2 py-2",
+        "flex items-center justify-between gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-muted/40",
         archived && "opacity-60"
       )}
     >
@@ -169,6 +178,6 @@ function CategoryRow({
       {editing && (
         <CategoryFormDialog category={category} open={editing} onOpenChange={setEditing} />
       )}
-    </li>
+    </motion.li>
   )
 }

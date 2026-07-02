@@ -1,5 +1,6 @@
 "use client"
 
+import { PieChart as PieChartIcon } from "lucide-react"
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -36,6 +37,7 @@ export function CategoryBreakdownChart({
         </CardHeader>
         <CardContent>
           <EmptyState
+            icon={<PieChartIcon className="size-5" />}
             title="Sem despesas este mês"
             description="Registre transações para ver a distribuição por categoria."
           />
@@ -60,11 +62,15 @@ export function CategoryBreakdownChart({
                 innerRadius={60}
                 outerRadius={90}
                 paddingAngle={2}
+                animationDuration={700}
+                animationEasing="ease-out"
               >
                 {data.map((entry, index) => (
                   <Cell
                     key={entry.categoryId ?? "uncategorized"}
                     fill={entry.color ?? FALLBACK_COLORS[index % FALLBACK_COLORS.length]}
+                    stroke="var(--card)"
+                    strokeWidth={2}
                   />
                 ))}
               </Pie>
@@ -75,6 +81,7 @@ export function CategoryBreakdownChart({
                   border: "1px solid var(--border)",
                   background: "var(--popover)",
                   color: "var(--popover-foreground)",
+                  boxShadow: "0 4px 16px oklch(0 0 0 / 0.12)",
                 }}
               />
             </PieChart>

@@ -103,8 +103,8 @@ export function ForgotPasswordForm() {
             {formError && (
               <p className="text-sm text-destructive">{formError}</p>
             )}
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? "Enviando..." : "Enviar link de recuperação"}
+            <Button type="submit" className="w-full" loading={isPending}>
+              Enviar link de recuperação
             </Button>
           </form>
         </Form>

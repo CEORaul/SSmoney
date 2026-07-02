@@ -143,8 +143,8 @@ export function ContributionDialog({
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? "Salvando..." : "Salvar"}
+              <Button type="submit" loading={isPending}>
+                Salvar
               </Button>
             </DialogFooter>
           </form>

@@ -1,3 +1,5 @@
+import { PieChart } from "lucide-react"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { formatCurrency } from "@/lib/money"
@@ -19,6 +21,7 @@ export function CategoryDeltaList({
       <CardContent>
         {items.length === 0 ? (
           <EmptyState
+            icon={<PieChart className="size-5" />}
             title="Sem despesas"
             description="Nenhuma despesa registrada neste mês ou no anterior."
           />

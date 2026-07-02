@@ -94,8 +94,8 @@ export function ProfileForm({
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Salvando..." : "Salvar alterações"}
+        <Button type="submit" loading={isPending}>
+          Salvar alterações
         </Button>
       </form>
     </Form>

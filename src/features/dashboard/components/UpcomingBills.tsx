@@ -17,6 +17,7 @@ export function UpcomingBills({ bills }: { bills: BillWithCategory[] }) {
       <CardContent>
         {bills.length === 0 ? (
           <EmptyState
+            icon={<CalendarClock className="size-5" />}
             title="Nada por vir"
             description="Contas com vencimento pendente aparecerão aqui."
           />

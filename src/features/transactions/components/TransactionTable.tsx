@@ -1,13 +1,15 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
+import { MoreHorizontal, Pencil, Receipt, Trash2 } from "lucide-react"
+import { motion } from "motion/react"
 import { toast } from "sonner"
 
 import { deleteTransaction } from "@/features/transactions/actions"
 import { TransactionFormDialog } from "@/features/transactions/components/TransactionFormDialog"
 import { formatCurrency } from "@/lib/money"
 import { formatDate } from "@/lib/date"
+import { fadeInUp, staggerContainer } from "@/lib/motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +20,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {
   Table,
-  TableBody,
   TableCell,
   TableHead,
   TableHeader,
@@ -57,6 +58,7 @@ export function TransactionTable({
   if (transactions.length === 0) {
     return (
       <EmptyState
+        icon={<Receipt className="size-5" />}
         title="Nenhuma transação encontrada"
         description="Ajuste os filtros ou registre uma nova receita ou despesa."
       />
@@ -75,9 +77,18 @@ export function TransactionTable({
             <TableHead className="w-10" />
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <motion.tbody
+          variants={staggerContainer}
+          initial="hidden"
+          animate="show"
+          className="[&_tr:last-child]:border-0"
+        >
           {transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
+            <motion.tr
+              key={transaction.id}
+              variants={fadeInUp}
+              className="border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted"
+            >
               <TableCell>
                 <div className="font-medium">{transaction.description}</div>
                 {!transaction.isPaid && (
@@ -126,9 +137,9 @@ export function TransactionTable({
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
-            </TableRow>
+            </motion.tr>
           ))}
-        </TableBody>
+        </motion.tbody>
       </Table>
       {editingTransaction && (
         <TransactionFormDialog

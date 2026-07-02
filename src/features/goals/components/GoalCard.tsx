@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react"
 import { Archive, ArchiveRestore, MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react"
+import { motion } from "motion/react"
 import { toast } from "sonner"
 
 import {
@@ -35,7 +36,13 @@ const STATUS_LABEL: Record<Goal["status"], string> = {
   ARCHIVED: "Arquivada",
 }
 
-export function GoalCard({ goal }: { goal: GoalWithContributions }) {
+export function GoalCard({
+  goal,
+  index = 0,
+}: {
+  goal: GoalWithContributions
+  index?: number
+}) {
   const [isPending, startTransition] = useTransition()
   const [editing, setEditing] = useState(false)
   const [contributing, setContributing] = useState(false)
@@ -90,6 +97,11 @@ export function GoalCard({ goal }: { goal: GoalWithContributions }) {
   }
 
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+    >
     <Card className={cn(goal.status === "ARCHIVED" && "opacity-60")}>
       <CardHeader className="flex-row items-start justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2 text-base">
@@ -137,9 +149,11 @@ export function GoalCard({ goal }: { goal: GoalWithContributions }) {
 
         <div className="space-y-2">
           <Progress value={percent} />
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium">{formatCurrency(goal.currentAmountCents)}</span>
-            <span className="text-muted-foreground">
+          <div className="flex items-end justify-between">
+            <span className="text-xl font-semibold tracking-tight tabular-nums">
+              {formatCurrency(goal.currentAmountCents)}
+            </span>
+            <span className="text-sm text-muted-foreground tabular-nums">
               de {formatCurrency(goal.targetAmountCents)} ({percent}%)
             </span>
           </div>
@@ -190,5 +204,6 @@ export function GoalCard({ goal }: { goal: GoalWithContributions }) {
         <ContributionDialog goalId={goal.id} open={contributing} onOpenChange={setContributing} />
       )}
     </Card>
+    </motion.div>
   )
 }

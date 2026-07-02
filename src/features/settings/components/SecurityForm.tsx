@@ -57,8 +57,8 @@ export function SecurityForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Salvando..." : "Atualizar senha"}
+        <Button type="submit" loading={isPending}>
+          Atualizar senha
         </Button>
       </form>
     </Form>

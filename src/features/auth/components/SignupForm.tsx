@@ -132,8 +132,8 @@ export function SignupForm() {
             {formError && (
               <p className="text-sm text-destructive">{formError}</p>
             )}
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? "Criando conta..." : "Criar conta"}
+            <Button type="submit" className="w-full" loading={isPending}>
+              Criar conta
             </Button>
           </form>
         </Form>

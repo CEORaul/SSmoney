@@ -25,7 +25,7 @@ export function NetWorthCard({
           <div className="space-y-3">
             <p
               className={cn(
-                "text-2xl font-semibold",
+                "text-3xl font-semibold tracking-tight tabular-nums",
                 totalCents < 0 && "text-red-600 dark:text-red-400"
               )}
             >

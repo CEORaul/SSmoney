@@ -51,9 +51,14 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="left" className="w-64 p-0">
         <SheetHeader className="h-16 justify-center border-b px-6">
-          <SheetTitle>SSmoney</SheetTitle>
+          <SheetTitle className="flex items-center gap-2">
+            <span className="flex size-6 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground">
+              S
+            </span>
+            SSmoney
+          </SheetTitle>
         </SheetHeader>
-        <nav className="space-y-1 px-3 py-2">
+        <nav className="space-y-1 px-3 py-4">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const isActive = pathname.startsWith(href);
             return (
@@ -68,7 +73,7 @@ export function MobileNav() {
                     : "text-foreground/70 hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <Icon className="size-4" />
+                <Icon className={cn("size-4", isActive && "text-primary")} />
                 {label}
               </Link>
             );

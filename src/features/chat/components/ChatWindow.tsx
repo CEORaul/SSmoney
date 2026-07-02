@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { Send, Sparkles } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
 import { toast } from "sonner"
 
 import { sendMessage } from "@/features/chat/actions"
@@ -82,31 +83,37 @@ export function ChatWindow({
             <p className="text-sm">Pergunte sobre seus gastos, receitas ou metas.</p>
           </div>
         ) : (
-          messages.map((message) => (
-            <div
-              key={message.id}
-              className={cn("flex", message.role === "USER" ? "justify-end" : "justify-start")}
-            >
-              <div
-                className={cn(
-                  "max-w-[80%] rounded-lg px-4 py-2 text-sm",
-                  message.role === "USER"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-foreground"
-                )}
+          <AnimatePresence initial={false}>
+            {messages.map((message) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className={cn("flex", message.role === "USER" ? "justify-end" : "justify-start")}
               >
-                {message.pending ? (
-                  <span className="flex items-center gap-1">
-                    <span className="size-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
-                    <span className="size-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
-                    <span className="size-1.5 animate-bounce rounded-full bg-current" />
-                  </span>
-                ) : (
-                  message.content
-                )}
-              </div>
-            </div>
-          ))
+                <div
+                  className={cn(
+                    "max-w-[80%] rounded-lg px-4 py-2 text-sm",
+                    message.role === "USER"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-foreground"
+                  )}
+                >
+                  {message.pending ? (
+                    <span className="flex items-center gap-1">
+                      <span className="size-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
+                      <span className="size-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
+                      <span className="size-1.5 animate-bounce rounded-full bg-current" />
+                    </span>
+                  ) : (
+                    message.content
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         )}
       </div>
       <div className="flex items-end gap-2 border-t p-3">

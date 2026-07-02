@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Target } from "lucide-react";
 
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -28,13 +28,14 @@ export default async function GoalsPage() {
       />
       {goals.length === 0 ? (
         <EmptyState
+          icon={<Target className="size-5" />}
           title="Nenhuma meta ainda"
           description="Crie uma meta para começar a guardar dinheiro para o que importa."
         />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {goals.map((goal) => (
-            <GoalCard key={goal.id} goal={goal} />
+          {goals.map((goal, index) => (
+            <GoalCard key={goal.id} goal={goal} index={index} />
           ))}
         </div>
       )}

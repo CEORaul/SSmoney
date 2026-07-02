@@ -26,7 +26,9 @@ export function RetrospectiveSummaryCards({
             <p className="text-sm text-muted-foreground">Meses registrados</p>
             <CalendarCheck className="size-4 shrink-0 text-muted-foreground" />
           </div>
-          <p className="text-2xl font-semibold">{registeredCount} de 12</p>
+          <p className="text-3xl font-semibold tracking-tight tabular-nums">
+            {registeredCount} de 12
+          </p>
           <div className="flex gap-1">
             {months.map((m) => (
               <span
@@ -49,7 +51,9 @@ export function RetrospectiveSummaryCards({
           </div>
           {bestMonth ? (
             <>
-              <p className="text-2xl font-semibold capitalize">{bestMonth.monthLabel}</p>
+              <p className="text-3xl font-semibold tracking-tight capitalize">
+                {bestMonth.monthLabel}
+              </p>
               <p className="text-sm text-emerald-600 dark:text-emerald-400">
                 {formatCurrency(bestMonth.totalSavingsCents, currency)} economizados
               </p>
@@ -67,7 +71,9 @@ export function RetrospectiveSummaryCards({
           </div>
           {highestExpenseMonth ? (
             <>
-              <p className="text-2xl font-semibold capitalize">{highestExpenseMonth.monthLabel}</p>
+              <p className="text-3xl font-semibold tracking-tight capitalize">
+                {highestExpenseMonth.monthLabel}
+              </p>
               <p className="text-sm text-red-600 dark:text-red-400">
                 {formatCurrency(highestExpenseMonth.totalExpenseCents, currency)} em despesas
               </p>

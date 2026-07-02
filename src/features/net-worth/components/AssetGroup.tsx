@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react"
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
+import { motion } from "motion/react"
 import { toast } from "sonner"
 
 import { deleteAsset } from "@/features/net-worth/actions"
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { formatCurrency } from "@/lib/money"
 import { formatDate } from "@/lib/date"
+import { fadeInUp, staggerContainer } from "@/lib/motion"
 import type { Asset, AssetType } from "@/generated/prisma/client"
 
 export function AssetGroup({
@@ -43,11 +45,16 @@ export function AssetGroup({
         </span>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-1">
+        <motion.ul
+          variants={staggerContainer}
+          initial="hidden"
+          animate="show"
+          className="space-y-1"
+        >
           {assets.map((asset) => (
             <AssetRow key={asset.id} asset={asset} currency={currency} />
           ))}
-        </ul>
+        </motion.ul>
       </CardContent>
     </Card>
   )
@@ -69,7 +76,10 @@ function AssetRow({ asset, currency }: { asset: Asset; currency: string }) {
   }
 
   return (
-    <li className="flex items-center justify-between gap-3 rounded-lg px-2 py-2">
+    <motion.li
+      variants={fadeInUp}
+      className="flex items-center justify-between gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-muted/40"
+    >
       <div>
         <p className="text-sm font-medium">{asset.name}</p>
         <p className="text-xs text-muted-foreground">Em {formatDate(asset.asOfDate)}</p>
@@ -95,6 +105,6 @@ function AssetRow({ asset, currency }: { asset: Asset; currency: string }) {
         </DropdownMenu>
       </div>
       {editing && <AssetFormDialog asset={asset} open={editing} onOpenChange={setEditing} />}
-    </li>
+    </motion.li>
   )
 }

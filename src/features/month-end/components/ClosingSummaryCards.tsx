@@ -85,7 +85,9 @@ export function ClosingSummaryCards({
               <p className="text-sm text-muted-foreground">{label}</p>
               <Icon className="size-4 shrink-0 text-muted-foreground" />
             </div>
-            <p className="text-2xl font-semibold">{formatCurrency(value, currency)}</p>
+            <p className="text-3xl font-semibold tracking-tight tabular-nums">
+              {formatCurrency(value, currency)}
+            </p>
             <DeltaBadge deltaCents={delta} positiveIsGood={positiveIsGood} currency={currency} />
           </CardContent>
         </Card>
