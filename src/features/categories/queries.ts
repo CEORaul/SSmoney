@@ -16,3 +16,12 @@ export async function listCategories(type?: CategoryType) {
     orderBy: [{ isDefault: "desc" }, { name: "asc" }],
   })
 }
+
+export async function listAllCategories() {
+  const profile = await requireUser()
+
+  return prisma.category.findMany({
+    where: { profileId: profile.id },
+    orderBy: [{ isArchived: "asc" }, { isDefault: "desc" }, { name: "asc" }],
+  })
+}

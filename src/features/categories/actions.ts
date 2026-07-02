@@ -59,6 +59,19 @@ export async function archiveCategory(id: string): Promise<ActionResult> {
   return { success: true }
 }
 
+export async function unarchiveCategory(id: string): Promise<ActionResult> {
+  const profile = await requireUser()
+
+  await prisma.category.updateMany({
+    where: { id, profileId: profile.id },
+    data: { isArchived: false },
+  })
+
+  revalidatePath("/categories")
+  revalidatePath("/transactions")
+  return { success: true }
+}
+
 export async function deleteCategory(id: string): Promise<ActionResult> {
   const profile = await requireUser()
 

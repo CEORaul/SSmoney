@@ -1,0 +1,51 @@
+import {
+  Baby,
+  Banknote,
+  Car,
+  Dumbbell,
+  Fuel,
+  Gamepad2,
+  Gift,
+  GraduationCap,
+  HeartPulse,
+  Home,
+  Laptop,
+  PawPrint,
+  PiggyBank,
+  Plane,
+  Receipt,
+  Shirt,
+  ShoppingBag,
+  Tag,
+  TrendingUp,
+  UtensilsCrossed,
+  Wifi,
+  type LucideIcon,
+} from "lucide-react"
+
+export const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Banknote,
+  Laptop,
+  TrendingUp,
+  PiggyBank,
+  Home,
+  UtensilsCrossed,
+  Car,
+  HeartPulse,
+  Gamepad2,
+  GraduationCap,
+  ShoppingBag,
+  Receipt,
+  Plane,
+  Gift,
+  Dumbbell,
+  Baby,
+  PawPrint,
+  Wifi,
+  Fuel,
+  Shirt,
+}
+
+export const DEFAULT_CATEGORY_ICON = Tag
+
+export const CATEGORY_ICON_NAMES = Object.keys(CATEGORY_ICONS)
