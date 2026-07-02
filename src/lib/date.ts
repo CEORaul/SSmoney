@@ -1,4 +1,5 @@
 import {
+  addMonths,
   endOfMonth,
   format,
   parse,
@@ -23,6 +24,10 @@ export function monthRange(yearMonth: string): { start: Date; end: Date } {
 
 export function previousYearMonth(yearMonth: string): string {
   return toYearMonth(subMonths(fromYearMonth(yearMonth), 1))
+}
+
+export function nextYearMonth(yearMonth: string): string {
+  return toYearMonth(addMonths(fromYearMonth(yearMonth), 1))
 }
 
 export function formatMonthLabel(yearMonth: string): string {
