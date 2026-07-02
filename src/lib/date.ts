@@ -34,6 +34,11 @@ export function formatMonthLabel(yearMonth: string): string {
   return format(fromYearMonth(yearMonth), "MMMM yyyy", { locale: ptBR })
 }
 
+/** Abbreviated month name without year, e.g. "jan.", for dense charts. */
+export function formatMonthShortLabel(yearMonth: string): string {
+  return format(fromYearMonth(yearMonth), "MMM", { locale: ptBR })
+}
+
 export function formatDate(date: Date, pattern = "dd/MM/yyyy"): string {
   return format(date, pattern, { locale: ptBR })
 }
