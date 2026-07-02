@@ -5,11 +5,12 @@ import { SummaryCards } from "@/features/dashboard/components/SummaryCards";
 import { CategoryBreakdownChart } from "@/features/dashboard/components/CategoryBreakdownChart";
 import { MonthlyEvolutionChart } from "@/features/dashboard/components/MonthlyEvolutionChart";
 import { UpcomingBills } from "@/features/dashboard/components/UpcomingBills";
-import { NetWorthPlaceholder } from "@/features/dashboard/components/NetWorthPlaceholder";
+import { getNetWorthSummary } from "@/features/net-worth/queries";
+import { NetWorthCard } from "@/features/net-worth/components/NetWorthCard";
 
 export default async function DashboardPage() {
   const profile = await requireUser();
-  const data = await getDashboardData();
+  const [data, netWorth] = await Promise.all([getDashboardData(), getNetWorthSummary()]);
 
   return (
     <div className="space-y-6">
@@ -33,7 +34,11 @@ export default async function DashboardPage() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <UpcomingBills bills={data.upcomingBills} />
-        <NetWorthPlaceholder />
+        <NetWorthCard
+          totalCents={netWorth.totalCents}
+          hasAssets={netWorth.hasAssets}
+          currency={netWorth.currency}
+        />
       </div>
     </div>
   );
