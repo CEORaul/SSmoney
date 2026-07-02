@@ -1,0 +1,299 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────
+// Identity
+// ─────────────────────────────────────────────────────────
+
+/// Mirrors auth.users.id (Supabase-managed). Prisma cannot reach into the
+/// `auth` schema, so this is a logical 1:1 kept in sync by a Postgres
+/// trigger (see prisma/migrations) plus a defensive upsert in requireUser().
+model Profile {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  fullName  String?
+  avatarUrl String?
+  currency  String   @default("BRL")
+  locale    String   @default("pt-BR")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  settings          UserSettings?
+  categories        Category[]
+  transactions      Transaction[]
+  goals             Goal[]
+  assets            Asset[]
+  linkedAccounts    LinkedAccount[]
+  chatConversations ChatConversation[]
+  monthlySnapshots  MonthlySnapshot[]
+
+  @@map("profiles")
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+model UserSettings {
+  id                  String   @id @default(uuid())
+  profileId           String   @unique
+  profile             Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  theme               Theme    @default(SYSTEM)
+  monthStartDay       Int      @default(1)
+  notifyUpcomingBills Boolean  @default(true)
+  aiAssistantEnabled  Boolean  @default(true)
+  onboardingCompleted Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("user_settings")
+}
+
+// ─────────────────────────────────────────────────────────
+// Financial control
+// ─────────────────────────────────────────────────────────
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+model Category {
+  id         String       @id @default(uuid())
+  profileId  String
+  profile    Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name       String
+  type       CategoryType
+  icon       String?
+  color      String?
+  isDefault  Boolean      @default(false)
+  isArchived Boolean      @default(false)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  transactions Transaction[]
+
+  @@unique([profileId, name, type])
+  @@map("categories")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id               String            @id @default(uuid())
+  profileId        String
+  profile          Profile           @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  categoryId       String?
+  category         Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  type             TransactionType
+  amountCents      Int
+  currency         String            @default("BRL")
+  description      String
+  note             String?
+  date             DateTime
+  dueDate          DateTime?
+  isPaid           Boolean           @default(true)
+  isRecurring      Boolean           @default(false)
+  recurrenceRule   String?
+  linkedAccountId  String?
+  linkedAccount    LinkedAccount?    @relation(fields: [linkedAccountId], references: [id], onDelete: SetNull)
+  goalContribution GoalContribution?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([profileId, date])
+  @@index([profileId, categoryId])
+  @@index([profileId, isPaid, dueDate])
+  @@map("transactions")
+}
+
+// ─────────────────────────────────────────────────────────
+// Goals
+// ─────────────────────────────────────────────────────────
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model Goal {
+  id                 String     @id @default(uuid())
+  profileId          String
+  profile            Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name               String
+  emoji              String?
+  targetAmountCents  Int
+  currentAmountCents Int        @default(0)
+  targetDate         DateTime?
+  status             GoalStatus @default(ACTIVE)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  contributions GoalContribution[]
+
+  @@index([profileId, status])
+  @@map("goals")
+}
+
+model GoalContribution {
+  id            String       @id @default(uuid())
+  goalId        String
+  goal          Goal         @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  transactionId String?      @unique
+  transaction   Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  amountCents   Int
+  date          DateTime     @default(now())
+  note          String?
+  createdAt     DateTime     @default(now())
+
+  @@index([goalId, date])
+  @@map("goal_contributions")
+}
+
+// ─────────────────────────────────────────────────────────
+// Net worth (prepared, minimal)
+// ─────────────────────────────────────────────────────────
+
+enum AssetType {
+  CASH
+  INVESTMENT
+  PROPERTY
+  VEHICLE
+  DEBT
+  OTHER
+}
+
+model Asset {
+  id              String         @id @default(uuid())
+  profileId       String
+  profile         Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name            String
+  type            AssetType
+  valueCents      Int
+  currency        String         @default("BRL")
+  linkedAccountId String?
+  linkedAccount   LinkedAccount? @relation(fields: [linkedAccountId], references: [id], onDelete: SetNull)
+  asOfDate        DateTime       @default(now())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("assets")
+}
+
+// ─────────────────────────────────────────────────────────
+// Open Finance (prepared, unused in MVP UI)
+// ─────────────────────────────────────────────────────────
+
+model Institution {
+  id        String   @id @default(uuid())
+  name      String
+  logoUrl   String?
+  country   String   @default("BR")
+  createdAt DateTime @default(now())
+
+  linkedAccounts LinkedAccount[]
+
+  @@map("institutions")
+}
+
+enum LinkedAccountStatus {
+  PENDING
+  ACTIVE
+  ERROR
+  DISCONNECTED
+}
+
+model LinkedAccount {
+  id            String              @id @default(uuid())
+  profileId     String
+  profile       Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  institutionId String
+  institution   Institution         @relation(fields: [institutionId], references: [id])
+  externalId    String?
+  provider      String?
+  accountType   String?
+  lastSyncedAt  DateTime?
+  status        LinkedAccountStatus @default(PENDING)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  transactions Transaction[]
+  assets       Asset[]
+
+  @@map("linked_accounts")
+}
+
+// ─────────────────────────────────────────────────────────
+// AI Assistant
+// ─────────────────────────────────────────────────────────
+
+enum ChatRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+model ChatConversation {
+  id        String   @id @default(uuid())
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages ChatMessage[]
+
+  @@index([profileId, updatedAt])
+  @@map("chat_conversations")
+}
+
+model ChatMessage {
+  id             String           @id @default(uuid())
+  conversationId String
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           ChatRole
+  content        String           @db.Text
+  provider       String?
+  metadata       Json?
+  createdAt      DateTime         @default(now())
+
+  @@index([conversationId, createdAt])
+  @@map("chat_messages")
+}
+
+// ─────────────────────────────────────────────────────────
+// Aggregation
+// ─────────────────────────────────────────────────────────
+
+model MonthlySnapshot {
+  id                  String   @id @default(uuid())
+  profileId           String
+  profile             Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  yearMonth           String
+  totalIncomeCents    Int
+  totalExpenseCents   Int
+  totalSavingsCents   Int
+  categoryBreakdown   Json
+  topGainerCategoryId String?
+  topShrinkCategoryId String?
+  isFinalized         Boolean  @default(false)
+  generatedAt         DateTime @default(now())
+
+  @@unique([profileId, yearMonth])
+  @@map("monthly_snapshots")
+}
