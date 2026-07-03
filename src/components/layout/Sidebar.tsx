@@ -17,6 +17,13 @@ import {
 
 import { cn } from "@/lib/utils";
 
+const MotionLink = motion.create(Link);
+
+const ICON_VARIANTS = {
+  rest: { x: 0 },
+  hover: { x: 2 },
+};
+
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/transactions", label: "Transações", icon: ArrowLeftRight },
@@ -40,8 +47,10 @@ function NavLink({
   isActive: boolean;
 }) {
   return (
-    <Link
+    <MotionLink
       href={href}
+      initial="rest"
+      whileHover="hover"
       className={cn(
         "relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
         isActive
@@ -56,14 +65,20 @@ function NavLink({
           transition={{ type: "spring", stiffness: 380, damping: 32 }}
         />
       )}
-      <Icon
-        className={cn(
-          "relative size-4 transition-colors",
-          isActive && "text-primary"
-        )}
-      />
+      <motion.span
+        variants={ICON_VARIANTS}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        className="relative flex"
+      >
+        <Icon
+          className={cn(
+            "size-4 transition-colors",
+            isActive && "text-primary"
+          )}
+        />
+      </motion.span>
       <span className="relative">{label}</span>
-    </Link>
+    </MotionLink>
   );
 }
 

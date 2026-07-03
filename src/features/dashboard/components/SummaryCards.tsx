@@ -4,18 +4,16 @@ import { motion } from "motion/react"
 import { ArrowDownRight, ArrowUpRight, PiggyBank, Wallet } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber"
 import { cn } from "@/lib/utils"
-import { formatCurrency } from "@/lib/money"
-import { fadeInUp, staggerContainer } from "@/lib/motion"
+import { fadeInUp } from "@/lib/motion"
 
 const TONE_CLASS = {
-  neutral: "text-foreground",
   positive: "text-emerald-600 dark:text-emerald-400",
   negative: "text-red-600 dark:text-red-400",
 } as const
 
 const ICON_TONE_CLASS = {
-  neutral: "bg-muted text-muted-foreground",
   positive: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   negative: "bg-red-500/10 text-red-600 dark:text-red-400",
 } as const
@@ -55,44 +53,29 @@ export function SummaryCards({
   ]
 
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      animate="show"
-      className="grid gap-4 lg:grid-cols-3"
-    >
-      <motion.div variants={fadeInUp} className="lg:col-span-1">
-        <Card className="h-full">
-          <CardContent className="flex h-full flex-col justify-between gap-6">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">Saldo</p>
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                <Wallet className="size-4" />
-              </span>
-            </div>
-            <p className="text-4xl font-semibold tracking-tighter tabular-nums md:text-5xl">
-              {formatCurrency(balanceCents, currency)}
-            </p>
-          </CardContent>
-        </Card>
-      </motion.div>
+    <motion.div initial="hidden" animate="show" variants={fadeInUp}>
+      <Card className="relative">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-24 -right-24 -z-10 size-72 rounded-full bg-primary/[0.07] blur-3xl"
+        />
+        <CardContent className="space-y-8">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">Saldo</p>
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+              <Wallet className="size-4" />
+            </span>
+          </div>
 
-      <div className="grid gap-4 sm:grid-cols-3 lg:col-span-2">
-        {secondary.map(({ label, value, icon: Icon, tone }) => (
-          <motion.div key={label} variants={fadeInUp}>
-            <Card>
-              <CardContent className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm text-muted-foreground">{label}</p>
-                  <p
-                    className={cn(
-                      "mt-2 text-2xl font-semibold tracking-tight tabular-nums",
-                      TONE_CLASS[tone]
-                    )}
-                  >
-                    {formatCurrency(value, currency)}
-                  </p>
-                </div>
+          <AnimatedNumber
+            cents={balanceCents}
+            currency={currency}
+            className="block text-5xl font-semibold md:text-6xl"
+          />
+
+          <div className="grid grid-cols-1 gap-6 border-t border-border/70 pt-6 sm:grid-cols-3">
+            {secondary.map(({ label, value, icon: Icon, tone }) => (
+              <div key={label} className="flex items-center gap-3">
                 <span
                   className={cn(
                     "flex size-8 shrink-0 items-center justify-center rounded-full",
@@ -101,11 +84,19 @@ export function SummaryCards({
                 >
                   <Icon className="size-4" />
                 </span>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">{label}</p>
+                  <AnimatedNumber
+                    cents={value}
+                    currency={currency}
+                    className={cn("block text-lg font-semibold", TONE_CLASS[tone])}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </motion.div>
   )
 }

@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Progress } from "@/components/ui/progress"
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber"
 import { formatCurrency } from "@/lib/money"
 import { formatDate } from "@/lib/date"
 import { cn } from "@/lib/utils"
@@ -150,9 +151,7 @@ export function GoalCard({
         <div className="space-y-2">
           <Progress value={percent} />
           <div className="flex items-end justify-between">
-            <span className="text-xl font-semibold tracking-tight tabular-nums">
-              {formatCurrency(goal.currentAmountCents)}
-            </span>
+            <AnimatedNumber cents={goal.currentAmountCents} className="text-xl font-semibold" />
             <span className="text-sm text-muted-foreground tabular-nums">
               de {formatCurrency(goal.targetAmountCents)} ({percent}%)
             </span>

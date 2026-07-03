@@ -1,8 +1,8 @@
 import { CalendarCheck, TrendingDown, Trophy } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber"
 import { cn } from "@/lib/utils"
-import { formatCurrency } from "@/lib/money"
 import type { MonthSummary } from "@/features/retrospective/queries"
 
 export function RetrospectiveSummaryCards({
@@ -55,7 +55,7 @@ export function RetrospectiveSummaryCards({
                 {bestMonth.monthLabel}
               </p>
               <p className="text-sm text-emerald-600 dark:text-emerald-400">
-                {formatCurrency(bestMonth.totalSavingsCents, currency)} economizados
+                <AnimatedNumber cents={bestMonth.totalSavingsCents} currency={currency} /> economizados
               </p>
             </>
           ) : (
@@ -75,7 +75,7 @@ export function RetrospectiveSummaryCards({
                 {highestExpenseMonth.monthLabel}
               </p>
               <p className="text-sm text-red-600 dark:text-red-400">
-                {formatCurrency(highestExpenseMonth.totalExpenseCents, currency)} em despesas
+                <AnimatedNumber cents={highestExpenseMonth.totalExpenseCents} currency={currency} /> em despesas
               </p>
             </>
           ) : (

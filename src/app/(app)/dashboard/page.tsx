@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth/session";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { getDashboardData } from "@/features/dashboard/queries";
 import { SummaryCards } from "@/features/dashboard/components/SummaryCards";
 import { CategoryBreakdownChart } from "@/features/dashboard/components/CategoryBreakdownChart";
@@ -14,7 +15,7 @@ export default async function DashboardPage() {
   const [data, netWorth] = await Promise.all([getDashboardData(), getNetWorthSummary()]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <PageHeader
         title={`Olá, ${profile.fullName?.split(" ")[0] ?? "por aqui"}`}
         description={`Resumo de ${data.monthLabel}`}
@@ -28,12 +29,12 @@ export default async function DashboardPage() {
         currency={data.currency}
       />
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <ScrollReveal className="grid gap-4 lg:grid-cols-2">
         <MonthlyEvolutionChart data={data.evolution} currency={data.currency} />
         <CategoryBreakdownChart data={data.categoryBreakdown} currency={data.currency} />
-      </div>
+      </ScrollReveal>
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <ScrollReveal className="grid gap-4 lg:grid-cols-3">
         <UpcomingBills bills={data.upcomingBills} />
         <NetWorthCard
           totalCents={netWorth.totalCents}
@@ -41,7 +42,7 @@ export default async function DashboardPage() {
           currency={netWorth.currency}
         />
         <AIInsightTeaser />
-      </div>
+      </ScrollReveal>
     </div>
   );
 }

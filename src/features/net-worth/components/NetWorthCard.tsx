@@ -3,7 +3,7 @@ import { Wallet } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatCurrency } from "@/lib/money"
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber"
 import { cn } from "@/lib/utils"
 
 export function NetWorthCard({
@@ -23,14 +23,14 @@ export function NetWorthCard({
       <CardContent>
         {hasAssets ? (
           <div className="space-y-3">
-            <p
+            <AnimatedNumber
+              cents={totalCents}
+              currency={currency}
               className={cn(
-                "text-3xl font-semibold tracking-tight tabular-nums",
+                "block text-3xl font-semibold",
                 totalCents < 0 && "text-red-600 dark:text-red-400"
               )}
-            >
-              {formatCurrency(totalCents, currency)}
-            </p>
+            />
             <Button asChild variant="outline" size="sm" className="w-full">
               <Link href="/net-worth">Ver ativos</Link>
             </Button>

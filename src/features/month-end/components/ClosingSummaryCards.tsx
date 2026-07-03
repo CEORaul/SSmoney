@@ -1,6 +1,7 @@
 import { ArrowDownRight, ArrowUpRight, Minus, PiggyBank, TrendingDown, TrendingUp } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber"
 import { cn } from "@/lib/utils"
 import { formatCurrency } from "@/lib/money"
 
@@ -85,9 +86,11 @@ export function ClosingSummaryCards({
               <p className="text-sm text-muted-foreground">{label}</p>
               <Icon className="size-4 shrink-0 text-muted-foreground" />
             </div>
-            <p className="text-3xl font-semibold tracking-tight tabular-nums">
-              {formatCurrency(value, currency)}
-            </p>
+            <AnimatedNumber
+              cents={value}
+              currency={currency}
+              className="block text-3xl font-semibold"
+            />
             <DeltaBadge deltaCents={delta} positiveIsGood={positiveIsGood} currency={currency} />
           </CardContent>
         </Card>

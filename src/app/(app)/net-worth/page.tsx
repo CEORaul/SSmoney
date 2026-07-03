@@ -4,8 +4,8 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/EmptyState";
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber";
 import { requireUser } from "@/lib/auth/session";
-import { formatCurrency } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import { listAssets } from "@/features/net-worth/queries";
 import { ASSET_TYPES_ORDER } from "@/features/net-worth/asset-types";
@@ -41,14 +41,14 @@ export default async function NetWorthPage() {
       <Card>
         <CardContent className="space-y-1">
           <p className="text-sm text-muted-foreground">Patrimônio líquido</p>
-          <p
+          <AnimatedNumber
+            cents={total}
+            currency={profile.currency}
             className={cn(
-              "text-4xl font-semibold tracking-tight tabular-nums",
+              "block text-4xl font-semibold",
               total < 0 && "text-red-600 dark:text-red-400"
             )}
-          >
-            {formatCurrency(total, profile.currency)}
-          </p>
+          />
         </CardContent>
       </Card>
 
