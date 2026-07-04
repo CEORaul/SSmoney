@@ -23,7 +23,7 @@ function MoverCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Icon className={tone === "up" ? "size-4 text-red-500" : "size-4 text-emerald-500"} />
+          <Icon className={tone === "up" ? "size-4 text-negative" : "size-4 text-positive"} />
           {title}
         </CardTitle>
       </CardHeader>
@@ -40,8 +40,8 @@ function MoverCard({
             <span
               className={
                 tone === "up"
-                  ? "text-sm font-medium text-red-600 dark:text-red-400"
-                  : "text-sm font-medium text-emerald-600 dark:text-emerald-400"
+                  ? "font-mono text-sm font-medium tabular-nums text-negative"
+                  : "font-mono text-sm font-medium tabular-nums text-positive"
               }
             >
               {item.deltaCents > 0 ? "+" : "-"}

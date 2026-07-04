@@ -35,6 +35,7 @@ model Profile {
   linkedAccounts    LinkedAccount[]
   chatConversations ChatConversation[]
   monthlySnapshots  MonthlySnapshot[]
+  bills             Bill[]
 
   @@map("profiles")
 }
@@ -83,6 +84,7 @@ model Category {
   updatedAt  DateTime     @updatedAt
 
   transactions Transaction[]
+  bills        Bill[]
 
   @@unique([profileId, name, type])
   @@map("categories")
@@ -112,6 +114,7 @@ model Transaction {
   linkedAccountId  String?
   linkedAccount    LinkedAccount?    @relation(fields: [linkedAccountId], references: [id], onDelete: SetNull)
   goalContribution GoalContribution?
+  bill             Bill?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
@@ -248,11 +251,17 @@ enum ChatRole {
   SYSTEM
 }
 
+enum MessageFeedback {
+  LIKE
+  DISLIKE
+}
+
 model ChatConversation {
   id        String   @id @default(uuid())
   profileId String
   profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
   title     String?
+  pinned    Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -269,6 +278,7 @@ model ChatMessage {
   role           ChatRole
   content        String           @db.Text
   provider       String?
+  feedback       MessageFeedback?
   metadata       Json?
   createdAt      DateTime         @default(now())
 
@@ -296,4 +306,94 @@ model MonthlySnapshot {
 
   @@unique([profileId, yearMonth])
   @@map("monthly_snapshots")
+}
+
+// ─────────────────────────────────────────────────────────
+// Bills (Contas a Pagar)
+// ─────────────────────────────────────────────────────────
+
+enum BillType {
+  ONE_TIME
+  INSTALLMENT
+  RECURRING
+}
+
+/// PENDING/PAID/CANCELLED are the only stored states — a bill has no
+/// background job to flip it automatically. "Atrasada" (overdue) and
+/// "Agendada" (scheduled) are derived at read time from a PENDING bill's
+/// dueDate (see getEffectiveStatus in src/features/bills/service.ts).
+enum BillStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum BillPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+  DEBIT_CARD
+  BOLETO
+  CASH
+  BANK_TRANSFER
+  OTHER
+}
+
+enum RecurrenceFrequency {
+  WEEKLY
+  MONTHLY
+  YEARLY
+  CUSTOM
+}
+
+/// A bill does not affect any financial total while PENDING — it only
+/// becomes a real Transaction (cash-basis) once markBillAsPaid() runs,
+/// which is the sole integration point with Dashboard/Month-end/
+/// Retrospective (they only ever aggregate Transaction, unmodified).
+model Bill {
+  id                  String               @id @default(uuid())
+  profileId           String
+  profile             Profile              @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  categoryId          String?
+  category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  name                String
+  description         String?
+  note                String?
+  amountCents         Int
+  currency            String               @default("BRL")
+  type                BillType             @default(ONE_TIME)
+  status              BillStatus           @default(PENDING)
+  priority            BillPriority         @default(MEDIUM)
+  tags                String[]             @default([])
+  dueDate             DateTime
+  paidAt              DateTime?
+  paymentMethod       PaymentMethod?
+  paymentAccount      String?
+  installmentGroupId  String?
+  installmentNumber   Int?
+  installmentTotal    Int?
+  recurrenceGroupId   String?
+  recurrenceFrequency RecurrenceFrequency?
+  recurrenceRule      String?
+  recurrenceIndex     Int?
+  /// Type-agnostic series identifier — mirrors installmentGroupId/recurrenceGroupId
+  /// so "this/future/all" edit-scope logic doesn't need to branch on BillType.
+  /// See resolveSeriesScope in src/features/bills/service.ts.
+  seriesId            String?
+  transactionId       String?              @unique
+  transaction         Transaction?         @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  @@index([profileId, dueDate])
+  @@index([profileId, status])
+  @@index([installmentGroupId])
+  @@index([recurrenceGroupId])
+  @@index([profileId, seriesId])
+  @@map("bills")
 }

@@ -151,8 +151,8 @@ export function GoalCard({
         <div className="space-y-2">
           <Progress value={percent} />
           <div className="flex items-end justify-between">
-            <AnimatedNumber cents={goal.currentAmountCents} className="text-xl font-semibold" />
-            <span className="text-sm text-muted-foreground tabular-nums">
+            <AnimatedNumber cents={goal.currentAmountCents} className="text-xl font-bold" />
+            <span className="font-mono text-sm text-muted-foreground tabular-nums">
               de {formatCurrency(goal.targetAmountCents)} ({percent}%)
             </span>
           </div>
@@ -167,7 +167,7 @@ export function GoalCard({
               >
                 <span>{formatDate(contribution.date)}</span>
                 <span className="flex items-center gap-2">
-                  <span className="font-medium text-foreground">
+                  <span className="font-mono font-medium tabular-nums text-foreground">
                     +{formatCurrency(contribution.amountCents)}
                   </span>
                   <button

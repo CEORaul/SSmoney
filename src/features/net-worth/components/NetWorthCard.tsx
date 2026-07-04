@@ -27,8 +27,8 @@ export function NetWorthCard({
               cents={totalCents}
               currency={currency}
               className={cn(
-                "block text-3xl font-semibold",
-                totalCents < 0 && "text-red-600 dark:text-red-400"
+                "block text-3xl font-bold",
+                totalCents < 0 && "text-negative"
               )}
             />
             <Button asChild variant="outline" size="sm" className="w-full">

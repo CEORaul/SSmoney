@@ -40,7 +40,7 @@ export function AssetGroup({
           <Icon className="size-4 text-muted-foreground" />
           {ASSET_TYPE_LABELS[type]}
         </CardTitle>
-        <span className="text-sm font-medium text-muted-foreground">
+        <span className="font-mono text-sm font-medium tabular-nums text-muted-foreground">
           {formatCurrency(total, currency)}
         </span>
       </CardHeader>
@@ -85,7 +85,9 @@ function AssetRow({ asset, currency }: { asset: Asset; currency: string }) {
         <p className="text-xs text-muted-foreground">Em {formatDate(asset.asOfDate)}</p>
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">{formatCurrency(asset.valueCents, currency)}</span>
+        <span className="font-mono text-sm font-medium tabular-nums">
+          {formatCurrency(asset.valueCents, currency)}
+        </span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" disabled={isPending}>

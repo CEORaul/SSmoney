@@ -45,8 +45,8 @@ export default async function NetWorthPage() {
             cents={total}
             currency={profile.currency}
             className={cn(
-              "block text-4xl font-semibold",
-              total < 0 && "text-red-600 dark:text-red-400"
+              "block text-4xl font-bold",
+              total < 0 && "text-negative"
             )}
           />
         </CardContent>

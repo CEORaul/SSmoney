@@ -8,7 +8,6 @@ import { MonthNav } from "@/features/month-end/components/MonthNav";
 import { ClosingSummaryCards } from "@/features/month-end/components/ClosingSummaryCards";
 import { CategoryDeltaList } from "@/features/month-end/components/CategoryDeltaList";
 import { TopMovers } from "@/features/month-end/components/TopMovers";
-import { AISummaryPlaceholder } from "@/features/month-end/components/AISummaryPlaceholder";
 
 const YEAR_MONTH_PATTERN = /^\d{4}-\d{2}$/;
 
@@ -52,10 +51,7 @@ export default async function MonthEndPage({
         topShrink={closing.topShrink}
         currency={profile.currency}
       />
-      <div className="grid gap-4 lg:grid-cols-2">
-        <CategoryDeltaList items={closing.categoryBreakdown} currency={profile.currency} />
-        <AISummaryPlaceholder />
-      </div>
+      <CategoryDeltaList items={closing.categoryBreakdown} currency={profile.currency} />
     </div>
   );
 }

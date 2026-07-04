@@ -5,7 +5,6 @@ import { requireUser } from "@/lib/auth/session";
 import { getYearRetrospective } from "@/features/retrospective/queries";
 import { RetrospectiveNav } from "@/features/retrospective/components/RetrospectiveNav";
 import { RetrospectiveSummaryCards } from "@/features/retrospective/components/RetrospectiveSummaryCards";
-import { ShareCardPlaceholder } from "@/features/retrospective/components/ShareCardPlaceholder";
 import { MonthlyEvolutionChart } from "@/features/dashboard/components/MonthlyEvolutionChart";
 
 const YEAR_PATTERN = /^\d{4}$/;
@@ -40,18 +39,15 @@ export default async function RetrospectivePage({
         highestExpenseMonth={retrospective.highestExpenseMonth}
         currency={profile.currency}
       />
-      <div className="grid gap-4 lg:grid-cols-2">
-        <MonthlyEvolutionChart
-          data={retrospective.months.map((m) => ({
-            yearMonth: m.yearMonth,
-            label: m.shortLabel,
-            incomeCents: m.totalIncomeCents,
-            expenseCents: m.totalExpenseCents,
-          }))}
-          currency={profile.currency}
-        />
-        <ShareCardPlaceholder />
-      </div>
+      <MonthlyEvolutionChart
+        data={retrospective.months.map((m) => ({
+          yearMonth: m.yearMonth,
+          label: m.shortLabel,
+          incomeCents: m.totalIncomeCents,
+          expenseCents: m.totalExpenseCents,
+        }))}
+        currency={profile.currency}
+      />
     </div>
   );
 }

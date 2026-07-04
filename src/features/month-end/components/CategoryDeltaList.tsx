@@ -40,16 +40,16 @@ export function CategoryDeltaList({
                   {item.name}
                 </span>
                 <span className="flex items-center gap-3">
-                  <span className="font-medium text-foreground">
+                  <span className="font-mono font-medium tabular-nums text-foreground">
                     {formatCurrency(item.currentCents, currency)}
                   </span>
                   <span
                     className={cn(
-                      "w-20 text-right text-xs",
+                      "w-20 text-right font-mono text-xs tabular-nums",
                       item.deltaCents > 0
-                        ? "text-red-600 dark:text-red-400"
+                        ? "text-negative"
                         : item.deltaCents < 0
-                          ? "text-emerald-600 dark:text-emerald-400"
+                          ? "text-positive"
                           : "text-muted-foreground"
                     )}
                   >

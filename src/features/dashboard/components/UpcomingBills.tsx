@@ -37,7 +37,7 @@ export function UpcomingBills({ bills }: { bills: BillWithCategory[] }) {
                     </p>
                   </div>
                 </div>
-                <span className="shrink-0 text-sm font-medium">
+                <span className="shrink-0 font-mono text-sm font-medium tabular-nums">
                   {formatCurrency(bill.amountCents, bill.currency)}
                 </span>
               </li>

@@ -12,6 +12,7 @@ import {
   CalendarCheck,
   Sparkles,
   Wallet,
+  Receipt,
   Settings,
 } from "lucide-react";
 
@@ -27,6 +28,7 @@ const ICON_VARIANTS = {
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/transactions", label: "Transações", icon: ArrowLeftRight },
+  { href: "/bills", label: "Contas a Pagar", icon: Receipt },
   { href: "/categories", label: "Categorias", icon: Tags },
   { href: "/goals", label: "Metas", icon: Target },
   { href: "/chat", label: "Assistente IA", icon: MessageCircle },

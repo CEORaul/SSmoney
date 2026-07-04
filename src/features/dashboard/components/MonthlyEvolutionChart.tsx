@@ -33,12 +33,19 @@ export function MonthlyEvolutionChart({
     Despesas: centsToAmount(point.expenseCents),
   }))
 
+  const hasMovement = data.some((point) => point.incomeCents > 0 || point.expenseCents > 0)
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Evolução mensal</CardTitle>
       </CardHeader>
       <CardContent>
+        {!hasMovement && (
+          <p className="mb-3 text-sm text-muted-foreground">
+            Sem movimentações no período — registre uma transação para ver sua evolução aqui.
+          </p>
+        )}
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
@@ -71,14 +78,14 @@ export function MonthlyEvolutionChart({
               />
               <Bar
                 dataKey="Receitas"
-                fill="var(--chart-1)"
+                fill="var(--positive)"
                 radius={[4, 4, 0, 0]}
                 animationDuration={600}
                 animationEasing="ease-out"
               />
               <Bar
                 dataKey="Despesas"
-                fill="var(--chart-3)"
+                fill="var(--negative)"
                 radius={[4, 4, 0, 0]}
                 animationDuration={600}
                 animationEasing="ease-out"

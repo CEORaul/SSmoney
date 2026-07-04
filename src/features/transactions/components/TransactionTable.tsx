@@ -104,9 +104,9 @@ export function TransactionTable({
                 {formatDate(transaction.date)}
               </TableCell>
               <TableCell
-                className={`text-right font-medium ${
+                className={`text-right font-mono font-medium tabular-nums ${
                   transaction.type === "INCOME"
-                    ? "text-emerald-600 dark:text-emerald-400"
+                    ? "text-positive"
                     : "text-foreground"
                 }`}
               >

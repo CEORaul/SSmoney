@@ -8,7 +8,6 @@ import { MonthlyEvolutionChart } from "@/features/dashboard/components/MonthlyEv
 import { UpcomingBills } from "@/features/dashboard/components/UpcomingBills";
 import { getNetWorthSummary } from "@/features/net-worth/queries";
 import { NetWorthCard } from "@/features/net-worth/components/NetWorthCard";
-import { AIInsightTeaser } from "@/features/dashboard/components/AIInsightTeaser";
 
 export default async function DashboardPage() {
   const profile = await requireUser();
@@ -34,14 +33,13 @@ export default async function DashboardPage() {
         <CategoryBreakdownChart data={data.categoryBreakdown} currency={data.currency} />
       </ScrollReveal>
 
-      <ScrollReveal className="grid gap-4 lg:grid-cols-3">
+      <ScrollReveal className="grid gap-4 lg:grid-cols-2">
         <UpcomingBills bills={data.upcomingBills} />
         <NetWorthCard
           totalCents={netWorth.totalCents}
           hasAssets={netWorth.hasAssets}
           currency={netWorth.currency}
         />
-        <AIInsightTeaser />
       </ScrollReveal>
     </div>
   );

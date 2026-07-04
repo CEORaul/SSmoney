@@ -9,13 +9,13 @@ import { cn } from "@/lib/utils"
 import { fadeInUp } from "@/lib/motion"
 
 const TONE_CLASS = {
-  positive: "text-emerald-600 dark:text-emerald-400",
-  negative: "text-red-600 dark:text-red-400",
+  positive: "text-positive",
+  negative: "text-negative",
 } as const
 
 const ICON_TONE_CLASS = {
-  positive: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  negative: "bg-red-500/10 text-red-600 dark:text-red-400",
+  positive: "bg-positive/10 text-positive",
+  negative: "bg-negative/10 text-negative",
 } as const
 
 export function SummaryCards({
@@ -70,7 +70,7 @@ export function SummaryCards({
           <AnimatedNumber
             cents={balanceCents}
             currency={currency}
-            className="block text-5xl font-semibold md:text-6xl"
+            className="block text-5xl font-bold md:text-6xl"
           />
 
           <div className="grid grid-cols-1 gap-6 border-t border-border/70 pt-6 sm:grid-cols-3">

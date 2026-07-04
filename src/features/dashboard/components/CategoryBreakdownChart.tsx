@@ -7,12 +7,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { formatCurrency } from "@/lib/money"
 
+// This chart is 100% expense data ("Despesas por categoria") — the fallback
+// ramp (used when a category has no custom color) is red-toned, not the
+// generic navy chart ramp, so gasto is recognizable by color alone.
 const FALLBACK_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
+  "var(--chart-negative-1)",
+  "var(--chart-negative-2)",
+  "var(--chart-negative-3)",
+  "var(--chart-negative-4)",
+  "var(--chart-negative-5)",
 ]
 
 type BreakdownItem = {
@@ -103,7 +106,7 @@ export function CategoryBreakdownChart({
                 />
                 {entry.name}
               </span>
-              <span className="font-medium text-foreground">
+              <span className="font-mono font-medium tabular-nums text-foreground">
                 {formatCurrency(entry.amountCents, currency)}
               </span>
             </li>

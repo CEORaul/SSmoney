@@ -29,8 +29,8 @@ function DeltaBadge({
   return (
     <span
       className={cn(
-        "flex items-center gap-1 text-xs",
-        isGood ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
+        "flex items-center gap-1 font-mono text-xs tabular-nums",
+        isGood ? "text-positive" : "text-negative"
       )}
     >
       <Icon className="size-3" />
@@ -89,7 +89,7 @@ export function ClosingSummaryCards({
             <AnimatedNumber
               cents={value}
               currency={currency}
-              className="block text-3xl font-semibold"
+              className="block text-3xl font-bold"
             />
             <DeltaBadge deltaCents={delta} positiveIsGood={positiveIsGood} currency={currency} />
           </CardContent>

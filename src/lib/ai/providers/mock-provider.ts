@@ -1,4 +1,4 @@
-import type { AIProvider, ChatMessageInput } from "@/lib/ai/types"
+import type { AIProvider, AIStreamEvent, ChatMessageInput } from "@/lib/ai/types"
 
 const KEYWORD_REPLIES: { keywords: string[]; reply: string }[] = [
   {
@@ -46,5 +46,11 @@ export const mockProvider: AIProvider = {
       content: pickReply(messages),
       providerLabel: "mock",
     }
+  },
+
+  async *chatStream({ messages }): AsyncIterable<AIStreamEvent> {
+    const content = pickReply(messages)
+    yield { type: "delta", text: content }
+    yield { type: "done", result: { content, providerLabel: "mock" } }
   },
 }

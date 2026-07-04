@@ -60,7 +60,7 @@ export function Topbar({
             <DropdownMenuItem
               onClick={async () => {
                 await signOut();
-                router.push("/login");
+                router.push("/");
                 router.refresh();
               }}
             >
