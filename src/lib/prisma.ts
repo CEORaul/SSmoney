@@ -13,23 +13,35 @@ const globalForPrisma = globalThis as unknown as {
 // unless the project has the IPv4 add-on. Prefer the pooled string when
 // present and fall back to DATABASE_URL for local dev (which only has that one).
 function resolveConnectionString(): string | undefined {
-  return (
+  const raw =
     process.env.POSTGRES_PRISMA_URL ??
     process.env.POSTGRES_URL ??
     process.env.DATABASE_URL
-  )
+  if (!raw) return raw
+
+  // pg's ConnectionParameters does `Object.assign({}, config, parse(connectionString))`
+  // — the sslmode parsed out of the connection string ALWAYS overrides any
+  // separate `ssl` option passed alongside `connectionString`. So a plain
+  // `ssl: { rejectUnauthorized: false }` config field is silently ignored
+  // whenever the string itself carries a `sslmode`. Supabase's pooled
+  // connection strings ship with `sslmode=require`, and newer pg-connection-
+  // string versions treat that as full chain verification (not just
+  // encryption) — which fails against Supabase's cert chain with "self-signed
+  // certificate in certificate chain" (P1011). Force `sslmode=no-verify` in
+  // the string itself, which pg-connection-string maps directly to
+  // `{ rejectUnauthorized: false }` — connection stays encrypted, only chain
+  // verification is relaxed.
+  try {
+    const url = new URL(raw)
+    url.searchParams.set("sslmode", "no-verify")
+    return url.toString()
+  } catch {
+    return raw
+  }
 }
 
 function createPrismaClient() {
-  const adapter = new PrismaPg({
-    connectionString: resolveConnectionString(),
-    // Newer pg versions treat sslmode=require/prefer/verify-ca as aliases for
-    // verify-full, so Supabase's pooler certificate chain (which Node's
-    // default trust store doesn't fully validate) now fails with "self-signed
-    // certificate in certificate chain" (P1011) instead of just connecting.
-    // The connection is still encrypted — this only relaxes chain verification.
-    ssl: { rejectUnauthorized: false },
-  })
+  const adapter = new PrismaPg({ connectionString: resolveConnectionString() })
   return new PrismaClient({ adapter })
 }
 
