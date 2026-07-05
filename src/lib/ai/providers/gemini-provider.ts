@@ -12,7 +12,10 @@ const UNAVAILABLE_REPLY =
   "Não consegui falar com o assistente agora. Tente novamente em instantes."
 
 const DEFAULT_MODEL = "gemini-2.5-flash"
-const DEFAULT_MAX_TOKENS = 2048
+// Financial breakdowns with numbered steps/bold headers routinely run past
+// 2048 tokens and were getting cut off mid-sentence with no indication to
+// the user — 2048 was too low for this assistant's typical response shape.
+const DEFAULT_MAX_TOKENS = 8192
 const DEFAULT_TEMPERATURE = 0.4
 const DEFAULT_MAX_RETRIES = 2
 const DEFAULT_TIMEOUT_MS = 60_000
