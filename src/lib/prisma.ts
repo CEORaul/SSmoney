@@ -21,7 +21,15 @@ function resolveConnectionString(): string | undefined {
 }
 
 function createPrismaClient() {
-  const adapter = new PrismaPg({ connectionString: resolveConnectionString() })
+  const adapter = new PrismaPg({
+    connectionString: resolveConnectionString(),
+    // Newer pg versions treat sslmode=require/prefer/verify-ca as aliases for
+    // verify-full, so Supabase's pooler certificate chain (which Node's
+    // default trust store doesn't fully validate) now fails with "self-signed
+    // certificate in certificate chain" (P1011) instead of just connecting.
+    // The connection is still encrypted — this only relaxes chain verification.
+    ssl: { rejectUnauthorized: false },
+  })
   return new PrismaClient({ adapter })
 }
 
