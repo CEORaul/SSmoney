@@ -22,6 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Logo } from "@/components/shared/Logo";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -47,11 +48,8 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="left" className="w-64 p-0">
         <SheetHeader className="h-16 justify-center border-b px-6">
-          <SheetTitle className="flex items-center gap-2">
-            <span className="flex size-6 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground">
-              S
-            </span>
-            SSmoney
+          <SheetTitle>
+            <Logo height={20} />
           </SheetTitle>
         </SheetHeader>
         <nav className="space-y-1 px-3 py-4">

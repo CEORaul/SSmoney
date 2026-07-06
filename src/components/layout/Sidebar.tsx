@@ -13,6 +13,7 @@ import {
   Settings,
 } from "lucide-react";
 
+import { Logo } from "@/components/shared/Logo";
 import { cn } from "@/lib/utils";
 
 const MotionLink = motion.create(Link);
@@ -83,13 +84,8 @@ export function Sidebar() {
 
   return (
     <aside className="hidden w-64 shrink-0 border-r border-sidebar-border bg-sidebar md:flex md:flex-col">
-      <div className="flex h-16 items-center gap-2 px-6">
-        <span className="flex size-6 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground">
-          S
-        </span>
-        <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
-          SSmoney
-        </span>
+      <div className="flex h-16 items-center px-6">
+        <Logo height={22} />
       </div>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {NAV_ITEMS.map(({ href, label, icon }) => (

@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { GitFork } from "lucide-react"
 
+import { Logo } from "@/components/shared/Logo"
+
 const FOOTER_LINKS = {
   Produto: [
     { label: "Recursos", href: "#recursos" },
@@ -23,13 +25,8 @@ export function MarketingFooter() {
       <div className="mx-auto w-full max-w-6xl px-6 py-14 md:px-10">
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
-                S
-              </span>
-              <span className="text-base font-bold tracking-tight text-foreground">
-                SSmoney
-              </span>
+            <Link href="/" className="flex items-center">
+              <Logo height={24} />
             </Link>
             <p className="mt-3 max-w-[16rem] text-sm text-muted-foreground">
               Sua vida financeira organizada, com uma IA que entende seus dados.

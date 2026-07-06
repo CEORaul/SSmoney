@@ -13,6 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { Logo } from "@/components/shared/Logo"
 import { cn } from "@/lib/utils"
 
 const NAV_LINKS = [
@@ -24,13 +25,8 @@ const NAV_LINKS = [
 
 function BrandMark() {
   return (
-    <Link href="/" className="flex items-center gap-2">
-      <span className="flex size-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
-        S
-      </span>
-      <span className="text-base font-bold tracking-tight text-foreground">
-        SSmoney
-      </span>
+    <Link href="/" className="flex items-center">
+      <Logo height={24} />
     </Link>
   )
 }
