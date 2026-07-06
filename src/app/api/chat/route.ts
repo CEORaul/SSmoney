@@ -10,6 +10,13 @@ import { deriveConversationTitle } from "@/features/chat/service"
 import { chatRequestSchema } from "@/features/chat/schemas"
 import type { ChatMessageInput } from "@/lib/ai/types"
 
+// Detailed financial breakdowns can take ~20s+ to fully stream (measured
+// against the live Gemini API) — without this, Vercel kills the function at
+// its default timeout (10s on Hobby), cutting the response off mid-sentence
+// with no error, which looked identical to the earlier max-tokens bug but
+// had nothing to do with it.
+export const maxDuration = 60
+
 function jsonError(message: string, status: number) {
   return new Response(JSON.stringify({ error: message }), {
     status,
