@@ -8,10 +8,16 @@ import { MonthlyEvolutionChart } from "@/features/dashboard/components/MonthlyEv
 import { UpcomingBills } from "@/features/dashboard/components/UpcomingBills";
 import { getNetWorthSummary } from "@/features/net-worth/queries";
 import { NetWorthCard } from "@/features/net-worth/components/NetWorthCard";
+import { getFeedbackBannerDismissed } from "@/features/feedback/queries";
+import { FeedbackBanner } from "@/features/feedback/components/FeedbackBanner";
 
 export default async function DashboardPage() {
   const profile = await requireUser();
-  const [data, netWorth] = await Promise.all([getDashboardData(), getNetWorthSummary()]);
+  const [data, netWorth, feedbackBannerDismissed] = await Promise.all([
+    getDashboardData(),
+    getNetWorthSummary(),
+    getFeedbackBannerDismissed(),
+  ]);
 
   return (
     <div className="space-y-10">
@@ -19,6 +25,8 @@ export default async function DashboardPage() {
         title={`Olá, ${profile.fullName?.split(" ")[0] ?? "por aqui"}`}
         description={`Resumo de ${data.monthLabel}`}
       />
+
+      <FeedbackBanner initialDismissed={feedbackBannerDismissed} />
 
       <SummaryCards
         balanceCents={data.balanceCents}

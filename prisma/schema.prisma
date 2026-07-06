@@ -36,6 +36,7 @@ model Profile {
   chatConversations ChatConversation[]
   monthlySnapshots  MonthlySnapshot[]
   bills             Bill[]
+  feedbacks         Feedback[]
 
   @@map("profiles")
 }
@@ -55,6 +56,7 @@ model UserSettings {
   notifyUpcomingBills Boolean  @default(true)
   aiAssistantEnabled  Boolean  @default(true)
   onboardingCompleted Boolean  @default(false)
+  feedbackBannerDismissed Boolean @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
@@ -396,4 +398,23 @@ model Bill {
   @@index([recurrenceGroupId])
   @@index([profileId, seriesId])
   @@map("bills")
+}
+
+// ─────────────────────────────────────────────────────────
+// Feedback
+// ─────────────────────────────────────────────────────────
+
+/// Captured automatically from the submitting page — no PII beyond the
+/// profile relation itself is ever requested from the user.
+model Feedback {
+  id        String   @id @default(uuid())
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  rating    Int?
+  message   String
+  page      String
+  createdAt DateTime @default(now())
+
+  @@index([profileId])
+  @@map("feedbacks")
 }
