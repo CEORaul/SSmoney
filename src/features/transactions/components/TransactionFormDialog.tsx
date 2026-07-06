@@ -11,6 +11,7 @@ import { createTransaction, updateTransaction } from "@/features/transactions/ac
 import { moneyAmountSchema } from "@/lib/validations/common"
 import type { TransactionInput } from "@/features/transactions/schemas"
 import { centsToAmount } from "@/lib/money"
+import { ManageCategoriesDialog } from "@/features/categories/components/ManageCategoriesDialog"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -69,12 +70,15 @@ function toFormValues(transaction?: Transaction | null): FormValues {
 
 export function TransactionFormDialog({
   categories,
+  allCategories,
   transaction,
   trigger,
   open: controlledOpen,
   onOpenChange: setControlledOpen,
 }: {
   categories: Category[]
+  /** Includes archived categories, for the "Gerenciar categorias" dialog. Falls back to `categories` if not provided. */
+  allCategories?: Category[]
   transaction?: Transaction | null
   trigger?: ReactNode
   open?: boolean
@@ -205,7 +209,20 @@ export function TransactionFormDialog({
               name="categoryId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Categoria</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Categoria</FormLabel>
+                    <ManageCategoriesDialog
+                      categories={allCategories ?? categories}
+                      trigger={
+                        <button
+                          type="button"
+                          className="text-xs font-medium text-primary hover:underline"
+                        >
+                          Gerenciar categorias
+                        </button>
+                      }
+                    />
+                  </div>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full">

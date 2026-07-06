@@ -27,7 +27,8 @@ async function sumByType(profileId: string, start?: Date, end?: Date) {
   return { incomeCents, expenseCents }
 }
 
-async function getMonthlyEvolution(profileId: string, currentYearMonth: string) {
+/** Exported for reuse by features/analysis (the merged monthly-analysis page). */
+export async function getMonthlyEvolution(profileId: string, currentYearMonth: string) {
   const months: string[] = []
   let cursor = currentYearMonth
   for (let i = 0; i < EVOLUTION_MONTHS; i++) {

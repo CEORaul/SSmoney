@@ -36,9 +36,11 @@ type TransactionWithCategory = Transaction & { category: Category | null }
 export function TransactionTable({
   transactions,
   categories,
+  allCategories,
 }: {
   transactions: TransactionWithCategory[]
   categories: Category[]
+  allCategories?: Category[]
 }) {
   const [isPending, startTransition] = useTransition()
   const [editingTransaction, setEditingTransaction] =
@@ -144,6 +146,7 @@ export function TransactionTable({
       {editingTransaction && (
         <TransactionFormDialog
           categories={categories}
+          allCategories={allCategories}
           transaction={editingTransaction}
           open={!!editingTransaction}
           onOpenChange={(open) => !open && setEditingTransaction(null)}

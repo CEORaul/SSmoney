@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Tags } from "lucide-react";
 
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
-import { listCategories } from "@/features/categories/queries";
+import { listCategories, listAllCategories } from "@/features/categories/queries";
+import { ManageCategoriesDialog } from "@/features/categories/components/ManageCategoriesDialog";
 import { listTransactions } from "@/features/transactions/queries";
 import { transactionFiltersSchema } from "@/features/transactions/schemas";
 import { TransactionFilters } from "@/features/transactions/components/TransactionFilters";
@@ -23,8 +24,9 @@ export default async function TransactionsPage({
     page: params.page,
   });
 
-  const [categories, { items, total, pageSize, page }] = await Promise.all([
+  const [categories, allCategories, { items, total, pageSize, page }] = await Promise.all([
     listCategories(),
+    listAllCategories(),
     listTransactions(filters),
   ]);
 
@@ -36,19 +38,31 @@ export default async function TransactionsPage({
         title="Transações"
         description="Registre e acompanhe suas receitas e despesas"
         actions={
-          <TransactionFormDialog
-            categories={categories}
-            trigger={
-              <Button>
-                <Plus className="size-4" />
-                Nova transação
-              </Button>
-            }
-          />
+          <div className="flex items-center gap-2">
+            <ManageCategoriesDialog
+              categories={allCategories}
+              trigger={
+                <Button variant="outline">
+                  <Tags className="size-4" />
+                  Gerenciar categorias
+                </Button>
+              }
+            />
+            <TransactionFormDialog
+              categories={categories}
+              allCategories={allCategories}
+              trigger={
+                <Button>
+                  <Plus className="size-4" />
+                  Nova transação
+                </Button>
+              }
+            />
+          </div>
         }
       />
       <TransactionFilters categories={categories} />
-      <TransactionTable transactions={items} categories={categories} />
+      <TransactionTable transactions={items} categories={categories} allCategories={allCategories} />
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>

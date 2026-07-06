@@ -6,12 +6,9 @@ import { motion } from "motion/react";
 import {
   LayoutDashboard,
   ArrowLeftRight,
-  Tags,
   Target,
   MessageCircle,
-  CalendarCheck,
-  Sparkles,
-  Wallet,
+  BarChart3,
   Receipt,
   Settings,
 } from "lucide-react";
@@ -29,12 +26,9 @@ const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/transactions", label: "Transações", icon: ArrowLeftRight },
   { href: "/bills", label: "Contas a Pagar", icon: Receipt },
-  { href: "/categories", label: "Categorias", icon: Tags },
   { href: "/goals", label: "Metas", icon: Target },
   { href: "/chat", label: "Assistente IA", icon: MessageCircle },
-  { href: "/month-end", label: "Fechamento do Mês", icon: CalendarCheck },
-  { href: "/retrospective", label: "Retrospectiva SS", icon: Sparkles },
-  { href: "/net-worth", label: "Patrimônio", icon: Wallet },
+  { href: "/analysis", label: "Análise mensal", icon: BarChart3 },
 ];
 
 function NavLink({
