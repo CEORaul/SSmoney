@@ -6,16 +6,13 @@ import { SummaryCards } from "@/features/dashboard/components/SummaryCards";
 import { CategoryBreakdownChart } from "@/features/dashboard/components/CategoryBreakdownChart";
 import { MonthlyEvolutionChart } from "@/features/dashboard/components/MonthlyEvolutionChart";
 import { UpcomingBills } from "@/features/dashboard/components/UpcomingBills";
-import { getNetWorthSummary } from "@/features/net-worth/queries";
-import { NetWorthCard } from "@/features/net-worth/components/NetWorthCard";
 import { getFeedbackBannerDismissed } from "@/features/feedback/queries";
 import { FeedbackBanner } from "@/features/feedback/components/FeedbackBanner";
 
 export default async function DashboardPage() {
   const profile = await requireUser();
-  const [data, netWorth, feedbackBannerDismissed] = await Promise.all([
+  const [data, feedbackBannerDismissed] = await Promise.all([
     getDashboardData(),
-    getNetWorthSummary(),
     getFeedbackBannerDismissed(),
   ]);
 
@@ -41,13 +38,8 @@ export default async function DashboardPage() {
         <CategoryBreakdownChart data={data.categoryBreakdown} currency={data.currency} />
       </ScrollReveal>
 
-      <ScrollReveal className="grid gap-4 lg:grid-cols-2">
+      <ScrollReveal>
         <UpcomingBills bills={data.upcomingBills} />
-        <NetWorthCard
-          totalCents={netWorth.totalCents}
-          hasAssets={netWorth.hasAssets}
-          currency={netWorth.currency}
-        />
       </ScrollReveal>
     </div>
   );

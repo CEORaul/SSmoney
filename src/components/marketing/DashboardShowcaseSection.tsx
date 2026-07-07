@@ -9,7 +9,7 @@ import { staggerContainer, fadeInUp } from "@/lib/motion"
 const BENEFITS = [
   "Saldo, receitas, despesas e economia atualizados a cada movimentação",
   "Gráficos de evolução mensal e gastos por categoria, sem configurar nada",
-  "Contas a pagar e patrimônio visíveis no mesmo painel, sem trocar de tela",
+  "Contas a pagar e próximos vencimentos visíveis no mesmo painel, sem trocar de tela",
 ]
 
 export function DashboardShowcaseSection() {

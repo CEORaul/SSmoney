@@ -7,7 +7,7 @@ import { staggerContainer, fadeInUp } from "@/lib/motion"
 
 const EXAMPLE_PROMPTS = [
   "Como economizar R$500?",
-  "Como foi meu fechamento do mês?",
+  "Como foi minha análise mensal?",
   "Quanto posso investir?",
   "Onde estou gastando mais?",
 ]
@@ -30,8 +30,8 @@ export function AISection() {
           </motion.h2>
           <motion.p variants={fadeInUp} className="mt-5 text-lg text-muted-foreground">
             Nada de respostas genéricas de chatbot. O assistente do SSmoney lê
-            seus dados reais — receitas, despesas, metas e patrimônio — antes
-            de te responder qualquer coisa.
+            seus dados reais — receitas, despesas, contas e metas — antes de
+            te responder qualquer coisa.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="mt-8 flex flex-wrap gap-2.5">

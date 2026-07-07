@@ -45,9 +45,9 @@ export function Hero({ isAuthenticated }: { isAuthenticated: boolean }) {
             variants={fadeInUp}
             className="mt-6 max-w-xl text-lg text-muted-foreground"
           >
-            SSmoney reúne receitas, contas, metas e patrimônio num só painel —
-            e um assistente de IA que já conhece seus dados antes de responder,
-            em vez de te devolver gráficos genéricos.
+            SSmoney reúne receitas, contas e metas num só painel — e um
+            assistente de IA que já conhece seus dados antes de responder, em
+            vez de te devolver gráficos genéricos.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="mt-9 flex flex-wrap gap-3">

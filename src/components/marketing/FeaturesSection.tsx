@@ -6,8 +6,8 @@ import {
   MessageCircle,
   Receipt,
   Target,
-  Wallet,
-  CalendarCheck,
+  ArrowLeftRight,
+  BarChart3,
   type LucideIcon,
 } from "lucide-react"
 
@@ -39,16 +39,16 @@ const FEATURES: { icon: LucideIcon; title: string; description: string }[] = [
       "Defina objetivos financeiros e acompanhe o progresso real, mês a mês, sem depender de planilha manual.",
   },
   {
-    icon: Wallet,
-    title: "Patrimônio",
+    icon: ArrowLeftRight,
+    title: "Transações",
     description:
-      "Acompanhe a evolução dos seus ativos e veja, com números, se está construindo patrimônio de verdade.",
+      "Registre receitas e despesas em segundos, organizadas por categoria automaticamente.",
   },
   {
-    icon: CalendarCheck,
-    title: "Fechamento do mês",
+    icon: BarChart3,
+    title: "Análise mensal",
     description:
-      "Um resumo automático do que mudou: onde você gastou mais, onde economizou, e o que ajustar no próximo mês.",
+      "Um relatório automático do seu mês: comparação com o anterior, categorias que mais pesaram e insights prontos.",
   },
 ]
 
